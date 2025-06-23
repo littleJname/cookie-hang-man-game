@@ -15,6 +15,7 @@ def making_a_guess():
         x += 1
     if not correct_guess:
         print(f"Geen {guess}, sorry.")
+        incorrect_guesses.append(guess.lower())
         update_display += 1
 
 # functie om te controleren of invoer alleen letters bevat
@@ -126,12 +127,16 @@ for letter in chosen_word:
 blank_list = list(blank)
 
 update_display = 0
+incorrect_guesses = []
 
 # het starten van het spel (introductie)
 
 print(HANGMAN[update_display])
 while True:
-    guess = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
+    if incorrect_guesses:
+        guess = input(f"je speelt hangman.\n{blank}\nVerkeerde letters: [{', '.join(incorrect_guesses)}]\nRaad een letter? ")
+    else:
+        guess = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
     if is_valid_letter(guess):
         break
     else:
@@ -140,6 +145,8 @@ while True:
 making_a_guess()
 print(HANGMAN[update_display])
 print(''.join(blank_list))
+if incorrect_guesses:
+    print(f"Verkeerde letters: [{', '.join(incorrect_guesses)}]")
 
 # Standen (winnen, verliezen, nog een keer raden)
 while update_display < 6:
@@ -148,7 +155,10 @@ while update_display < 6:
         break
     
     while True:
-        guess = input("Doe het nog een keer ")
+        if incorrect_guesses:
+            guess = input(f"Doe het nog een keer\nVerkeerde letters: [{', '.join(incorrect_guesses)}]\nRaad een letter: ")
+        else:
+            guess = input("Doe het nog een keer\nRaad een letter: ")
         if is_valid_letter(guess):
             break
         else:
@@ -157,6 +167,8 @@ while update_display < 6:
     making_a_guess()
     print(HANGMAN[update_display])
     print(''.join(blank_list))
+    if incorrect_guesses:
+        print(f"Verkeerde letters: [{', '.join(incorrect_guesses)}]")
 
 if update_display == 6:
     print("GAME OVER YOU TWAT.")
