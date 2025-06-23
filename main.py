@@ -111,7 +111,7 @@ HANGMAN = (
 """)
 
 #woordenlijst
-woord_lijst = ["aarde", "informatica","informatiekunde", "spelletje", "aardigheidje", "scholier", "fotografiewaardebepaling", "specialiteit", "verzekering", "universiteit", "heesterperk", "golrieus", "pauw bidsprinkhaan garnaal", "grass", "skelet", "schaduw", "wolk", "paars", "spongebob", "pyhton", ]
+woord_lijst = ["aarde", "informatica","informatiekunde", "spelletje", "aardigheidje", "scholier", "fotografiewaardebepaling", "specialiteit", "verzekering", "universiteit", "heesterperk", "glorieus", "mantis garnaal", "skelet", "wolk","spongebob", "python", ]
 
 chosen_word=list(random.choice(woord_lijst))
 
@@ -122,10 +122,20 @@ blank_list = list(blank)
 
 update_display = 0
 
+# controleren of het een letter is
+def get_valid_letter():
+    while True:
+        guess = input("Raad een letter? ")
+        if len(guess) == 1 and guess.isalpha():
+            return guess
+        else:
+            print("Voer alleen een letter in!")
+
 # het starten van het spel (introductie)
 
 print(HANGMAN[update_display])
-guess = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
+print(f"je speelt galgje.\n{blank}")
+guess = get_valid_letter()
 making_a_guess()
 print(HANGMAN[update_display])
 print(''.join(blank_list))
@@ -135,7 +145,7 @@ while update_display < 6:
     if blank_list == chosen_word:
         print("Je hebt gewonnen glorieuze KING!")
         break
-    guess = input("Doe het nog een keer ")
+    guess = get_valid_letter()
     making_a_guess()
     print(HANGMAN[update_display])
     print(''.join(blank_list))
