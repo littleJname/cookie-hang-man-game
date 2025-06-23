@@ -115,9 +115,10 @@ HANGMAN = (
 """)
 
 #woordenlijst
-word_list = ["aarde", "informatica", "golrieus", "pauw bidsprinkhaan garnaal", "grass", "skelet", "schaduw", "wolk", "paars", "spongebob", "roblox", "mango", "corny", "pyhton" ]
+woord_lijst = ["aarde", "informatica", "golrieus", "mantis garnaal", "spongebob",  "python", "informatiekunde", "spelletje", "aardigheidje", "scholier", "fotografie",
+"waardebepaling", "specialiteit", "verzekering", "universiteit", "heesterperk" ]
 
-chosen_word = list(random.choice(word_list))
+chosen_word = list(random.choice(woord_lijst))
 
 blank = ""
 for letter in chosen_word:
@@ -134,7 +135,7 @@ while True:
     if is_valid_letter(guess):
         break
     else:
-        print("Voer alleen één letter in, geen cijfers of andere tekens!")
+        print("Voer alleen een letter in, geen cijfers of andere tekens")
 
 making_a_guess()
 print(HANGMAN[update_display])
