@@ -17,6 +17,10 @@ def making_a_guess():
         print(f"Geen {guess}, sorry.")
         update_display += 1
 
+# functie om te controleren of invoer alleen letters bevat
+def is_valid_letter(input_str):
+    return len(input_str) == 1 and input_str.isalpha()
+
 #hangman tekeningen 
 HANGMAN = (
     """
@@ -111,9 +115,10 @@ HANGMAN = (
 """)
 
 #woordenlijst
-word_list = ["aarde", "informatica", "golrieus", "pauw bidsprinkhaan garnaal", "grass", "skelet", "schaduw", "wolk", "paars", "spongebob", "roblox", "mango", "corny", "pyhton" ]
+woord_lijst = ["aarde", "informatica", "golrieus", "mantis garnaal", "spongebob",  "python", "informatiekunde", "spelletje", "aardigheidje", "scholier", "fotografie",
+"waardebepaling", "specialiteit", "verzekering", "universiteit", "heesterperk" ]
 
-chosen_word = list(random.choice(word_list))
+chosen_word = list(random.choice(woord_lijst))
 
 blank = ""
 for letter in chosen_word:
@@ -125,7 +130,13 @@ update_display = 0
 # het starten van het spel (introductie)
 
 print(HANGMAN[update_display])
-guess = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
+while True:
+    guess = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
+    if is_valid_letter(guess):
+        break
+    else:
+        print("Voer alleen een letter in, geen cijfers of andere tekens")
+
 making_a_guess()
 print(HANGMAN[update_display])
 print(''.join(blank_list))
@@ -135,7 +146,14 @@ while update_display < 6:
     if blank_list == chosen_word:
         print("Je hebt gewonnen glorieuze KING!")
         break
-    guess = input("Doe het nog een keer ")
+    
+    while True:
+        guess = input("Doe het nog een keer ")
+        if is_valid_letter(guess):
+            break
+        else:
+            print("Voer alleen één letter in, geen cijfers of andere tekens!")
+    
     making_a_guess()
     print(HANGMAN[update_display])
     print(''.join(blank_list))
