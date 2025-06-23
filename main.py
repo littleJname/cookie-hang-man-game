@@ -1,19 +1,145 @@
+#galgje de spel van hangen en woorden raden
+#import voor het willekeurig kiezen van een woord
 
-import turtle
+import random
 
-# Set up the turtle
-t = turtle.Turtle()
-t.pensize(2)
-t.color("blue")
+# voor het raden van een letter
+def making_a_guess():
+    x = 0
+    global update_display
+    correct_guess = False
+    for letter in chosen_word:
+        if guess.lower() == chosen_word[x]:
+            blank_list[x] = guess.lower()
+            correct_guess = True
+        x += 1
+    if not correct_guess:
+        print(f"Geen {guess}, sorry.")
+        update_display += 1
 
-# Function to draw hexagon
-def draw_hexagon(size):
-    for _ in range(6):
-        t.forward(size)
-        t.right(60)
+#hangman tekeningen 
+HANGMAN = (
+    """
+ --+---+--
+ |   |
+ |
+ |
+ |
+ |
+ |
+ |
+----------
+""",
+"""
+ --+---+--
+ |   |
+ |   O
+ |
+ |
+ |
+ |
+ |
+ |
+----------
+""",
+"""
+ --+---+--
+ |   |
+ |   O
+ |  ---
+ |   |
+ |   
+ |   
+ |     
+----------
+""",
+"""
+ --+---+--
+ |   |
+ |   O
+ | /---
+ |   
+ |   
+ |   
+ |    
+----------
+""",
+"""
+ --+---+--
+ |    |
+ |    O
+ |  /---/
+ |   
+ |   
+ |   
+ |      
+----------
+""",
+"""
+ --+---+--
+ |    |
+ |    O
+ |  /---/
+ |    |
+ |   
+ |   
+ |     
+----------
+""",
+"""
+ --+---+--
+ |   |
+ |   O
+ | /---/
+ |   |
+ |  |
+ |  | 
+ |     
+----------
+""",
+"""
+ --+---+--
+ |   |
+ |   O
+ | /---/
+ |   |
+ |   |
+ |  | |
+ |  | |
+ |  
+----------
+""")
 
-# Draw the hexagon
-draw_hexagon(100)
+#woordenlijst
+woord_lijst = ["aarde", "informatica","informatiekunde", "spelletje", "aardigheidje", "scholier", "fotografiewaardebepaling", "specialiteit", "verzekering", "universiteit", "heesterperk", "golrieus", "pauw bidsprinkhaan garnaal", "grass", "skelet", "schaduw", "wolk", "paars", "spongebob", "pyhton", ]
 
-# Keep the window open
-turtle.done()
+chosen_word=list(random.choice(woord_lijst))
+
+blank = ""
+for letter in chosen_word:
+    blank += "_"
+blank_list = list(blank)
+
+update_display = 0
+
+# het starten van het spel (introductie)
+
+print(HANGMAN[update_display])
+guess = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
+making_a_guess()
+print(HANGMAN[update_display])
+print(''.join(blank_list))
+
+# Standen (winnen, verliezen, nog een keer raden)
+while update_display < 6:
+    if blank_list == chosen_word:
+        print("Je hebt gewonnen glorieuze KING!")
+        break
+    guess = input("Doe het nog een keer ")
+    making_a_guess()
+    print(HANGMAN[update_display])
+    print(''.join(blank_list))
+    
+if update_display == 6:
+    print("GAME OVER YOU TWAT.")
+    print(f"Het woord was {chosen_word}")
