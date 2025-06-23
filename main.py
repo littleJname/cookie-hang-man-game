@@ -1,4 +1,3 @@
-
 #galgje de spel van hangen en woorden raden
 #import voor het willekeurig kiezen van een woord
 
@@ -112,72 +111,35 @@ HANGMAN = (
 """)
 
 #woordenlijst
-woord_lijst = ["aarde", "informatica","informatiekunde", "spelletje", "aardigheidje", "scholier", "fotografiewaardebepaling", "specialiteit", "verzekering", "universiteit", "heesterperk", "glorieus", "mantis garnaal", "skelet", "wolk","spongebob", "python", ]
+word_list = ["aarde", "informatica", "golrieus", "pauw bidsprinkhaan garnaal", "grass", "skelet", "schaduw", "wolk", "paars", "spongebob", "roblox", "mango", "corny", "pyhton" ]
 
-# controleren of het een letter is
-def get_valid_letter():
-    while True:
-        guess = input("Raad een letter? ")
-        if len(guess) == 1 and guess.isalpha():
-            return guess
-        else:
-            print("Voer alleen een letter in!")
+chosen_word = list(random.choice(word_list))
 
-# functie om te vragen of speler nog een keer wil spelen
-def play_again():
-    while True:
-        again = input("Wil je nog een keer spelen? (j/n): ").lower()
-        if again in ['j', 'ja', 'y', 'yes']:
-            return True
-        elif again in ['n', 'nee', 'no']:
-            return False
-        else:
-            print("Voer 'j' voor ja of 'n' voor nee in!")
+blank = ""
+for letter in chosen_word:
+    blank += "_"
+blank_list = list(blank)
 
-# hoofdspel functie
-def play_game():
-    global chosen_word, blank_list, update_display, guess
-    
-    chosen_word = list(random.choice(woord_lijst))
-    
-    blank = ""
-    for letter in chosen_word:
-        blank += "_"
-    blank_list = list(blank)
-    
-    update_display = 0
-    
-    # het starten van het spel (introductie)
-    print(HANGMAN[update_display])
-    print(f"je speelt galgje.\n{''.join(blank_list)}")
-    guess = get_valid_letter()
+update_display = 0
+
+# het starten van het spel (introductie)
+
+print(HANGMAN[update_display])
+guess = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
+making_a_guess()
+print(HANGMAN[update_display])
+print(''.join(blank_list))
+
+# Standen (winnen, verliezen, nog een keer raden)
+while update_display < 6:
+    if blank_list == chosen_word:
+        print("Je hebt gewonnen glorieuze KING!")
+        break
+    guess = input("Doe het nog een keer ")
     making_a_guess()
     print(HANGMAN[update_display])
     print(''.join(blank_list))
-    
-    # Standen (winnen, verliezen, nog een keer raden)
-    while update_display < 6:
-        if blank_list == chosen_word:
-            print("Je hebt gewonnen glorieuze KING!")
-            return
-        guess = get_valid_letter()
-        making_a_guess()
-        print(HANGMAN[update_display])
-        print(''.join(blank_list))
-        
-    if update_display == 6:
-        print("GAME OVER YOU TWAT.")
-        print(f"Het woord was {''.join(chosen_word)}")
 
-# hoofdloop voor het spel
-def main():
-    print("Welkom bij Galgje!")
-    while True:
-        play_game()
-        if not play_again():
-            print("Bedankt voor het spelen!")
-            break
-
-# start het spel
-if __name__ == "__main__":
-    main()
+if update_display == 6:
+    print("GAME OVER YOU TWAT.")
+    print(f"Het woord was {chosen_word}")
