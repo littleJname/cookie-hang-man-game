@@ -7,14 +7,15 @@ import random
 def making_a_guess():
     x = 0
     global update_display
-    correct_guess = False
-    for letter in chosen_word:
-        if guess.lower() == chosen_word[x]:
-            blank_list[x] = guess.lower()
-            correct_guess = True
+    goede_keuze = False
+    for letter in gekozen_woord:
+        if keuze.lower() == gekozen_woord[x]:
+            blank_list[x] = keuze.lower()
+            goede_keuze = True
         x += 1
-    if not correct_guess:
-        print(f"Geen {guess}, sorry.")
+    if not goede_keuze:
+        print(f"Geen {keuze}, sorry.")
+        foute_keuze.append(keuze.lower())
         update_display += 1
 
 # functie om te controleren of invoer alleen letters bevat
@@ -61,7 +62,7 @@ HANGMAN = (
  --+---+--
  |   |
  |   O
- | /---
+ | |---
  |   
  |   
  |   
@@ -72,7 +73,7 @@ HANGMAN = (
  --+---+--
  |    |
  |    O
- |  /---/
+ |  |---|
  |   
  |   
  |   
@@ -83,7 +84,7 @@ HANGMAN = (
  --+---+--
  |    |
  |    O
- |  /---/
+ |  |---|
  |    |
  |   
  |   
@@ -94,7 +95,7 @@ HANGMAN = (
  --+---+--
  |   |
  |   O
- | /---/
+ | |---|
  |   |
  |  |
  |  | 
@@ -105,7 +106,7 @@ HANGMAN = (
  --+---+--
  |   |
  |   O
- | /---/
+ | |---|
  |   |
  |   |
  |  | |
@@ -118,21 +119,26 @@ HANGMAN = (
 woord_lijst = ["aarde", "informatica", "golrieus", "mantis garnaal", "spongebob",  "python", "informatiekunde", "spelletje", "aardigheidje", "scholier", "fotografie",
 "waardebepaling", "specialiteit", "verzekering", "universiteit", "heesterperk" ]
 
-chosen_word = list(random.choice(woord_lijst))
+gekozen_woord = list(random.choice(woord_lijst))
 
+# fouten antwoorden en het raden van een woord
 blank = ""
-for letter in chosen_word:
+for letter in gekozen_woord:
     blank += "_"
 blank_list = list(blank)
 
 update_display = 0
+foute_keuze = []
 
 # het starten van het spel (introductie)
 
 print(HANGMAN[update_display])
 while True:
-    guess = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
-    if is_valid_letter(guess):
+    if foute_keuze:
+        keuze = input(f"je speelt hangman.\n{blank}\nVerkeerde letters: [{', '.join(foute_keuze)}]\nRaad een letter? ")
+    else:
+        keuze = input(f"je speelt hangman.\n{blank}\nRaad een letter? ")
+    if is_valid_letter(keuze):
         break
     else:
         print("Voer alleen een letter in, geen cijfers of andere tekens")
@@ -140,24 +146,34 @@ while True:
 making_a_guess()
 print(HANGMAN[update_display])
 print(''.join(blank_list))
+if foute_keuze:
+    print(f"Verkeerde letters: [{', '.join(foute_keuze)}]")
+
 
 # Standen (winnen, verliezen, nog een keer raden)
 while update_display < 6:
-    if blank_list == chosen_word:
+    if blank_list == gekozen_woord:
         print("Je hebt gewonnen glorieuze KING!")
         break
     
     while True:
-        guess = input("Doe het nog een keer ")
-        if is_valid_letter(guess):
+        if foute_keuze:
+            keuze = input(f"Doe het nog een keer\nVerkeerde letters: [{', '.join(foute_keuze)}]\nRaad een letter: ")
+        else:
+            keuze = input("Doe het nog een keer\nRaad een letter: ")
+        if is_valid_letter(keuze):
             break
         else:
-            print("Voer alleen één letter in, geen cijfers of andere tekens!")
-    
+            print("Voer alleen één letter in, geen cijfers of andere tekens")
+
+
+# verkeerde letters laten zien
     making_a_guess()
     print(HANGMAN[update_display])
     print(''.join(blank_list))
+    if foute_keuze:
+        print(f"Verkeerde letters: [{', '.join(foute_keuze)}]")
 
 if update_display == 6:
     print("GAME OVER YOU TWAT.")
-    print(f"Het woord was {chosen_word}")
+    print(f"Het woord was {gekozen_woord}")
